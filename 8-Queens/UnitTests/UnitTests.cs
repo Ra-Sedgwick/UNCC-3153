@@ -35,17 +35,19 @@ namespace UnitTests
             Assert.AreEqual(GridSum, Cols);
         }
 
-        public void GetQueens()
+        public void GetQueens(int[,] grid)
         {
-            // Arrange
-            int Rows = 8;
-            int Cols = 8;
-            int[,] Board = Program.BuildBoard(Rows, Cols);
+            // Arrange;
             int Queens = 0;
 
             // Act, Sum up all queens on board
-            foreach (int[] subArray in grid)
-                Queens = subArray.Sum();
+            for (int r = 0; r < grid.GetLength(0); r++)
+            {
+                for (int c = 0; c < grid.GetLength(1); c++)
+                {
+                    Queens += grid[r, c];
+                }
+            }
 
             // Assert, the number of queens should equal the number of columns
             Assert.AreEqual(Queens, Cols);
