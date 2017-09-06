@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _8_Queens
+namespace EightQueens
 {
     public static class Program
     {
@@ -14,7 +14,7 @@ namespace _8_Queens
             PrintGrid(board);
         }
 
-        private static int[,] BuildBoard(int row, int col)
+        public static int[,] BuildBoard(int row, int col)
         {
             int[,] board = new int[row, col];
             Random rand = new Random();
@@ -36,7 +36,7 @@ namespace _8_Queens
             return board;
         }
 
-        private static void PrintGrid(int[,] grid)
+        public static void PrintGrid(int[,] grid)
         {
             for (int i = 0; i < grid.GetLength(0); i++)
             {
