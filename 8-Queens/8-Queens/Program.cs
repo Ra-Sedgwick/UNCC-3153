@@ -12,6 +12,8 @@ namespace EightQueens
         {
             Board Board = new Board();
             Board.Print();
+            var result = Board.CheckGoalState();
+            Console.ReadKey();
 
         }
 

@@ -66,6 +66,34 @@ namespace EightQueens
             return Queens;
         }
 
+        public List<int[]> CheckGoalState()
+        {
+            var Conflicts = new List<int[]>();
+
+            for (int i = 0; i < Queens.Count; i++)
+            {
+                var SubList = Queens.GetRange(i, Queens.Count - i);
+                int DiagonalIndex = Queens[i][0] - Queens[i][1];
+
+                // Rows
+                Conflicts.AddRange(
+                    SubList.Where(x => x[0] == Queens[i][0])
+                );
+
+                // Columns
+                Conflicts.AddRange(
+                     SubList.Where(x => x[1] == Queens[i][1])
+                );
+
+                // Diagonal
+                Conflicts.AddRange(
+                    SubList.Where(x => x[0] - x[1] == DiagonalIndex)
+                );
+            }
+
+            return Conflicts;
+        }   
+
         public void Print()
         {
             foreach (var subList in State)
