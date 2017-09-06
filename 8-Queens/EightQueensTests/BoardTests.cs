@@ -36,7 +36,7 @@ namespace EightQueens.Tests
         [TestMethod()]
         public void BoardQueensTest()
         {
-            // Arragne
+            // Arrange
             int size = 8;
             Board Board = new Board(size);
 
@@ -46,5 +46,57 @@ namespace EightQueens.Tests
             // Assert
             Assert.AreEqual(QueenCount, size);
         }
+
+        [TestMethod()]
+        public void CheckGoalStateTest()
+        {
+            // Arrange
+            int size = 8;
+            Board TrueBoard = Helpers.GetTrueSolution(size);
+            Board FalseBoard = Helpers.GetFalseSolution(size);
+
+            // Act
+            var TrueSolutionConflicts = TrueBoard.CheckGoalState();
+            var FalseSolutionConflicts = FalseBoard.CheckGoalState();
+
+            // Assert
+            Assert.Fail();
+        }
     }
+
+    class Helpers
+    {
+        public static Board GetTrueSolution(int _size)
+        {
+            Board Board = new Board(_size);
+
+            Board.State[0] = new List<int> { 0, 0, 0, 0, 0, 1, 0, 0 };
+            Board.State[1] = new List<int> { 0, 0, 0, 1, 0, 0, 0, 0} ;
+            Board.State[2] = new List<int> { 0, 0, 0, 0, 0, 0, 1, 0 };
+            Board.State[3] = new List<int> { 1, 0, 0, 0, 0, 0, 0, 0 };
+            Board.State[4] = new List<int> { 0, 0, 0, 0, 0, 0, 0, 1 };
+            Board.State[5] = new List<int> { 0, 1, 0, 0, 0, 0, 0, 0 };
+            Board.State[5] = new List<int> { 0, 0, 0, 0, 1, 0, 0, 0 };
+            Board.State[7] = new List<int> { 0, 0, 1, 0, 0, 0, 0, 0 };
+
+            return Board;
+        }
+
+        public static Board GetFalseSolution(int _size)
+        {
+            Board Board = new Board(_size);
+
+            Board.State[0] = [0, 0, 0, 0, 0, 1, 0, 0];
+            Board.State[1] = [0, 0, 0, 0, 1, 0, 0, 0];
+            Board.State[2] = [0, 0, 0, 0, 0, 0, 0, 1];
+            Board.State[3] = [1, 0, 0, 0, 0, 0, 0, 0];
+            Board.State[4] = [0, 0, 0, 0, 0, 0, 0, 1];
+            Board.State[5] = [0, 1, 0, 0, 0, 0, 0, 0];
+            Board.State[5] = [0, 0, 0, 0, 1, 0, 0, 0];
+            Board.State[7] = [0, 0, 1, 0, 0, 0, 0, 0];
+
+            return Board;
+        }
+    }
+    
 }

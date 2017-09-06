@@ -66,6 +66,10 @@ namespace EightQueens
             return Queens;
         }
 
+        // Checks Board state for conflicting queen postions
+        // Returns reust as a list of conflict coordinates. 
+
+        // TODO: Am I checking diagonals in both directions?
         public List<int[]> CheckGoalState()
         {
             var Conflicts = new List<int[]>();
