@@ -9,15 +9,18 @@ namespace EightQueens
     public class Board
     {
         public List<List<int>> State { get; set; }
+        public List<int[]> Queens { get; set; }
 
         public Board()
         {
             this.State = BuildState(8);
+            this.Queens = GetQueens();
         }
 
         public Board(int _size)
         {
             this.State = BuildState(_size);
+            this.Queens = GetQueens();
 
         }
 
@@ -42,6 +45,25 @@ namespace EightQueens
             }
 
             return State;
+        }
+
+        private List<int[]> GetQueens()
+        {
+            var Queens = new List<int[]>();
+
+            for (int row = 0; row < State.Count(); row++)
+            {
+                for (int col = 0; col < State.Count; col++)
+                {
+                    if (State[row][col] == 1)
+                    {
+                        var queen = new int[] { row, col };
+                        Queens.Add(queen);
+                    }
+                }
+            }
+
+            return Queens;
         }
 
         public void Print()

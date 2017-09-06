@@ -10,32 +10,34 @@ namespace EightQueens
     {
         static void Main(string[] args)
         {
-            Board Board = new Board(8);
+            Board Board = new Board();
             Board.Print();
+
         }
 
-       
-
-        //public static List<int[]> GetQueens(int[,] grid)
-        //{
-        //    List<int[]> Queens = new List<int[]>();
 
 
-        //    for (int r = 0; r < grid.GetLength(0); r++)
-        //    {
-        //        for (int c = 0; c < grid.GetLength(1); c++)
-        //        {
-        //            if (grid[r, c] == 1)
-        //            {
-        //                int[] queen = new int[] { r, c };
-        //                Queens.Add(queen);
-        //            }
-        //        }
-        //    }
 
-        //    return Queens;
+        public static List<int[]> GetQueens(int[,] grid)
+        {
+            List<int[]> Queens = new List<int[]>();
 
-        //}
+
+            for (int r = 0; r < grid.GetLength(0); r++)
+            {
+                for (int c = 0; c < grid.GetLength(1); c++)
+                {
+                    if (grid[r, c] == 1)
+                    {
+                        int[] queen = new int[] { r, c };
+                        Queens.Add(queen);
+                    }
+                }
+            }
+
+            return Queens;
+
+        }
 
 
         //// No queen occupies same Row, Col, Diag

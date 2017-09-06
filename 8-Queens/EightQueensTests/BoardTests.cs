@@ -1,5 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+﻿using EightQueens;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace EightQueens.Tests
 {
@@ -8,7 +9,7 @@ namespace EightQueens.Tests
     {
 
         [TestMethod()]
-        public void BoardTest()
+        public void BoardStateTest()
         {
             // Arrange
             int size = 8;
@@ -17,7 +18,7 @@ namespace EightQueens.Tests
 
             // Act, Sum queens in each column, assign to correspoding
             //      array position. 
-            for(int i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
                 foreach (var Row in Board.State)
                 {
@@ -30,6 +31,20 @@ namespace EightQueens.Tests
             {
                 Assert.AreEqual(queen, 1);
             }
+        }
+
+        [TestMethod()]
+        public void BoardQueensTest()
+        {
+            // Arragne
+            int size = 8;
+            Board Board = new Board(size);
+
+            // Act
+            int QueenCount = Board.Queens.Count;
+
+            // Assert
+            Assert.AreEqual(QueenCount, size);
         }
     }
 }
