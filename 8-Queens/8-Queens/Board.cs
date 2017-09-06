@@ -47,7 +47,7 @@ namespace EightQueens
             return State;
         }
 
-        private List<int[]> GetQueens()
+        public List<int[]> GetQueens()
         {
             var Queens = new List<int[]>();
 

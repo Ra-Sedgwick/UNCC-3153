@@ -13,6 +13,7 @@ namespace EightQueens
             Board Board = new Board();
             Board.Print();
             var result = Board.CheckGoalState();
+
             Console.ReadKey();
 
         }
@@ -29,7 +30,7 @@ namespace EightQueens
             {
                 for (int c = 0; c < grid.GetLength(1); c++)
                 {
-                    if (grid[r, c] == 1)
+                    if (grid[c, r] == 1)
                     {
                         int[] queen = new int[] { r, c };
                         Queens.Add(queen);
