@@ -14,28 +14,7 @@ namespace EightQueens
             Board.Print();
         }
 
-        //public static int[,] BuildBoard(int row, int col)
-        //{
-        //    int[,] board = new int[row, col];
-        //    Random rand = new Random();
-
-
-        //    // Initialzie board with all 0's.
-        //    for (int i = 0; i < row; i++)
-        //        for (int j = 0; j < col; j++)
-        //            board[i, j] = 0;
-
-        //    // Place One queen randomly in each column.
-        //    for (int i = 0; i < col; i++)
-        //    {
-        //        int queen = rand.Next(0, col);
-        //        Console.WriteLine(queen);
-        //        board[queen, i] = 1;
-        //    }
-
-        //    return board;
-        //}
-
+       
 
         //public static List<int[]> GetQueens(int[,] grid)
         //{

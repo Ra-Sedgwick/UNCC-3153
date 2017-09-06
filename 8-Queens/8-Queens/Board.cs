@@ -6,11 +6,22 @@ using System.Threading.Tasks;
 
 namespace EightQueens
 {
-    class Board
+    public class Board
     {
         public List<List<int>> State { get; set; }
 
+        public Board()
+        {
+            this.State = BuildState(8);
+        }
+
         public Board(int _size)
+        {
+            this.State = BuildState(_size);
+
+        }
+
+        private List<List<int>> BuildState(int _size)
         {
             State = new List<List<int>>();
             Random Random = new Random();
@@ -30,6 +41,7 @@ namespace EightQueens
                 State[queen][i] = 1;
             }
 
+            return State;
         }
 
         public void Print()
