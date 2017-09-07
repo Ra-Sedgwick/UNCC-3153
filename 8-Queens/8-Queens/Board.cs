@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace EightQueens
 {
@@ -68,8 +67,6 @@ namespace EightQueens
 
         // Checks Board state for conflicting queen postions
         // Returns reust as a list of conflict coordinates. 
-
-        // TODO: Am I checking diagonals in both directions?
         public List<int[]> CheckGoalState()
         {
             var Conflicts = new List<int[]>();
@@ -77,7 +74,8 @@ namespace EightQueens
             for (int i = 0; i < Queens.Count; i++)
             {
                 var SubList = Queens.GetRange(i, Queens.Count - i);
-                int DiagonalIndex = Queens[i][0] - Queens[i][1];
+                int DescDiagonalIndex = Queens[i][0] - Queens[i][1];
+                int AscDiagnoalIndex = Queens[i][0] + Queens[i][1];
 
                 // Rows
                 Conflicts.AddRange(
@@ -89,9 +87,14 @@ namespace EightQueens
                      SubList.Where(x => x[1] == Queens[i][1])
                 );
 
-                // Diagonal
+                // Descending Diagonal
                 Conflicts.AddRange(
-                    SubList.Where(x => x[0] - x[1] == DiagonalIndex)
+                    SubList.Where(x => x[0] - x[1] == DescDiagonalIndex)
+                );
+
+                // Ascending Diagnonal
+                Conflicts.AddRange(
+                    SubList.Where(x => x[0] + x[1] == AscDiagnoalIndex)
                 );
             }
 
