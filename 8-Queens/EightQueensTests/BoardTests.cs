@@ -34,7 +34,7 @@ namespace EightQueens.Tests
         }
 
         [TestMethod()]
-        public void BoardQueensTest()
+        public void GetQueensTest()
         {
             // Arrange
             int size = 8;
@@ -68,15 +68,18 @@ namespace EightQueens.Tests
             // Arrange
             int size = 8;
             Board TrueBoard = Helpers.GetTrueSolution(size);
+            TrueBoard.Queens = TrueBoard.GetQueens();
+
             Board FalseBoard = Helpers.GetFalseSolution(size);
+            FalseBoard.Queens = FalseBoard.GetQueens();
 
             // Act
             var TrueSolutionConflicts = TrueBoard.CheckGoalState();
             var FalseSolutionConflicts = FalseBoard.CheckGoalState();
 
             // Assert
-            Assert.AreEqual(TrueSolutionConflicts.Count, 0);
-            Assert.AreNotEqual(FalseSolutionConflicts, 0);
+            Assert.IsNotNull(TrueSolutionConflicts);
+            Assert.AreNotEqual(FalseSolutionConflicts.Count, 0);
         }
     }
 
