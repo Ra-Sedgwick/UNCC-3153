@@ -132,13 +132,43 @@ namespace EightQueens
             for (int i = 0; i < Queens.Count; i++)
             {
                 var SubList = Queens.GetRange(i, Queens.Count - i);
-                int DescDiagonalIndex = Queens[i][0] - Queens[i][1];
-                int AscDiagnoalIndex = Queens[i][0] + Queens[i][1];
+                //int DescDiagonalIndex = SubList[0][0] - SubList[0][1];
+                //int AscDiagnoalIndex = SubList[0][0] + SubList[0][1];
+
+                for (int j = 1; j < SubList.Count; j++)
+                {
+                    if (SubList[0][0] == SubList[j][0])
+                        Conflicts.Add(i, SubList[j]);
+
+                    if (SubList[0][1] == SubList[j][1])
+                        Conflicts.Add(i, SubList[j]);
+
+                    if (SubList[0][0] - SubList[0][1] == SubList[j][0] - SubList[j][1])
+                        Conflicts.Add(i, SubList[j]);
+
+                    if (SubList[0][0] + SubList[0][1] == SubList[j][0] + SubList[j][1])
+                        Conflicts.Add(i, SubList[j]);
+                }
+
+                //// Rows
+                //SubList.Where(queen => queen[0] == Queens[i][0]).ToList()
+                //    .ForEach(conflict => Conflicts.Add(i, conflict));
+
+                //// Columns
+                //SubList.Where(queen => queen[1] == Queens[i][1]).ToList()
+                //    .ForEach(conflict => Conflicts.Add(i, conflict));
 
 
-                // Rows
-                SubList.Where(queen => queen[0] == Queens[i][0]).ToList()
-                    .ForEach(conflict => Conflicts.Add(i, conflict));
+                //SubList.Where(queen => 
+                //    (
+                //        queen[0] == SubList[i][0] ||                     // Check Rows
+                //        queen[1] == SubList[i][1] ||                     // Check Columns
+                //        queen[0] - queen[1] == DescDiagonalIndex ||     // Check Descending Diagonal
+                //        queen[0] + queen[1] == AscDiagnoalIndex         // Check Ascending Diagonal
+                //    ))  
+                //    .ToList()
+                //    .ForEach(conflict => Conflicts.Add(i, conflict));
+
 
 
             //    Conflicts[i].AddRange(

@@ -59,22 +59,22 @@ namespace EightQueens.Tests
             }
         }
 
-        //[TestMethod()]
-        //public void CheckGoalStateTest()
-        //{
-        //    // Arrange
-        //    int size = 8;
-        //    Board TrueBoard = Helpers.GetTrueSolution(size);
-        //    Board FalseBoard = Helpers.GetFalseSolution(size);
+        [TestMethod()]
+        public void CheckGoalStateTest()
+        {
+            // Arrange
+            int size = 8;
+            Board TrueBoard = Helpers.GetTrueSolution(size);
+            Board FalseBoard = Helpers.GetFalseSolution(size);
 
-        //    // Act
-        //    var TrueSolutionConflicts = TrueBoard.CheckGoalState();
-        //    var FalseSolutionConflicts = FalseBoard.CheckGoalState();
+            // Act
+            Conflicts TrueSolutionConflicts = TrueBoard.CheckGoalState();
+            Conflicts FalseSolutionConflicts = FalseBoard.CheckGoalState();
 
-        //    // Assert
-        //    Assert.IsNotNull(TrueSolutionConflicts);
-        //    Assert.AreNotEqual(FalseSolutionConflicts.Count, 0);
-        //}
+            // Assert
+            Assert.IsNotNull(TrueSolutionConflicts);
+            Assert.AreNotEqual(FalseSolutionConflicts.Table.Count, 0);
+        }
     }
 
     class Helpers
