@@ -24,6 +24,23 @@ namespace EightQueens
 
         }
 
+        public void SetCell(int row, int col, int value)
+        {
+            if (value == 0 || value == 1)
+            {
+                this.State[row][col] = value;
+            }
+
+            if (value == 1)
+                this.Queens = GetQueens();
+        }
+
+        public void SetRow(int index, List<int> row)
+        {
+            this.State[index] = row;
+            this.Queens = GetQueens();
+        }
+
         private List<List<int>> BuildState(int _size)
         {
             State = new List<List<int>>();
@@ -47,7 +64,7 @@ namespace EightQueens
             return State;
         }
 
-        public List<int[]> GetQueens()
+        private List<int[]> GetQueens()
         {
             var Queens = new List<int[]>();
 

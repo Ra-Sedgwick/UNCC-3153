@@ -53,12 +53,10 @@ namespace EightQueens.Tests
                 new int[] { 7, 2 }
             };
 
-            var TestQueens = Board.GetQueens();
-
             // Assert
             for (int i = 0; i < size; i++)
             {
-                CollectionAssert.AreEqual(TestQueens[i], TargetQueens[i]);
+                CollectionAssert.AreEqual(Board.Queens[i], TargetQueens[i]);
             }
         }
 
@@ -68,10 +66,7 @@ namespace EightQueens.Tests
             // Arrange
             int size = 8;
             Board TrueBoard = Helpers.GetTrueSolution(size);
-            TrueBoard.Queens = TrueBoard.GetQueens();
-
             Board FalseBoard = Helpers.GetFalseSolution(size);
-            FalseBoard.Queens = FalseBoard.GetQueens();
 
             // Act
             var TrueSolutionConflicts = TrueBoard.CheckGoalState();
@@ -89,14 +84,14 @@ namespace EightQueens.Tests
         {
             Board Board = new Board(_size);
 
-            Board.State[0] = new List<int> { 0, 0, 0, 0, 0, 1, 0, 0 };
-            Board.State[1] = new List<int> { 0, 0, 0, 1, 0, 0, 0, 0 };
-            Board.State[2] = new List<int> { 0, 0, 0, 0, 0, 0, 1, 0 };
-            Board.State[3] = new List<int> { 1, 0, 0, 0, 0, 0, 0, 0 };
-            Board.State[4] = new List<int> { 0, 0, 0, 0, 0, 0, 0, 1 };
-            Board.State[5] = new List<int> { 0, 1, 0, 0, 0, 0, 0, 0 };
-            Board.State[6] = new List<int> { 0, 0, 0, 0, 1, 0, 0, 0 };
-            Board.State[7] = new List<int> { 0, 0, 1, 0, 0, 0, 0, 0 };
+            Board.SetRow(0, new List<int> { 0, 0, 0, 0, 0, 1, 0, 0 });
+            Board.SetRow(1, new List<int> { 0, 0, 0, 1, 0, 0, 0, 0 });
+            Board.SetRow(2, new List<int> { 0, 0, 0, 0, 0, 0, 1, 0 });
+            Board.SetRow(3, new List<int> { 1, 0, 0, 0, 0, 0, 0, 0 });
+            Board.SetRow(4, new List<int> { 0, 0, 0, 0, 0, 0, 0, 1 });
+            Board.SetRow(5, new List<int> { 0, 1, 0, 0, 0, 0, 0, 0 });
+            Board.SetRow(6, new List<int> { 0, 0, 0, 0, 1, 0, 0, 0 });
+            Board.SetRow(7, new List<int> { 0, 0, 1, 0, 0, 0, 0, 0 });
 
             return Board;
         }
@@ -105,14 +100,14 @@ namespace EightQueens.Tests
         {
             Board Board = new Board(_size);
 
-            Board.State[0] = new List<int> { 0, 0, 0, 0, 0, 1, 0, 0 };
-            Board.State[1] = new List<int> { 0, 0, 0, 0, 1, 0, 0, 0 };
-            Board.State[2] = new List<int> { 0, 0, 0, 0, 0, 0, 0, 1 };
-            Board.State[3] = new List<int> { 1, 0, 0, 0, 0, 0, 0, 0 };
-            Board.State[4] = new List<int> { 0, 0, 0, 0, 0, 0, 0, 1 };
-            Board.State[5] = new List<int> { 0, 1, 0, 0, 0, 0, 0, 0 };
-            Board.State[5] = new List<int> { 0, 0, 0, 0, 1, 0, 0, 0 };
-            Board.State[7] = new List<int> { 0, 0, 1, 0, 0, 0, 0, 0 };
+            Board.SetRow(0, new List<int> { 0, 0, 0, 0, 0, 1, 0, 0 });
+            Board.SetRow(1, new List<int> { 0, 0, 0, 0, 1, 0, 0, 0 });
+            Board.SetRow(2, new List<int> { 0, 0, 0, 0, 0, 0, 0, 1 });
+            Board.SetRow(3, new List<int> { 1, 0, 0, 0, 0, 0, 0, 0 });
+            Board.SetRow(4, new List<int> { 0, 0, 0, 0, 0, 0, 0, 1 });
+            Board.SetRow(5, new List<int> { 0, 1, 0, 0, 0, 0, 0, 0 });
+            Board.SetRow(6, new List<int> { 0, 0, 0, 0, 1, 0, 0, 0 });
+            Board.SetRow(7, new List<int> { 0, 0, 1, 0, 0, 0, 0, 0 });
 
             return Board;
         }
