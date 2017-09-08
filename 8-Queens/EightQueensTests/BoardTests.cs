@@ -1,5 +1,4 @@
-﻿using EightQueens;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 namespace EightQueens.Tests
