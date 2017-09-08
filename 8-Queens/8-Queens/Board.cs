@@ -10,16 +10,21 @@ namespace EightQueens
         public List<List<int>> State { get; set; }
         public List<int[]> Queens { get; set; }
 
+        // Key: Queen coordinates, Value: List of conflicting queens by coordinates.
+        public Conflicts Conflicts { get; set; }
         public Board()
         {
             this.State = BuildState(8);
             this.Queens = GetQueens();
+            this.Conflicts = CheckGoalState();
+            
         }
 
         public Board(int _size)
         {
             this.State = BuildState(_size);
             this.Queens = GetQueens();
+            this.Conflicts = CheckGoalState();
 
         }
 
@@ -84,9 +89,45 @@ namespace EightQueens
 
         // Checks Board state for conflicting queen postions
         // Returns reust as a list of conflict coordinates. 
-        public List<int[]> CheckGoalState()
+        //public List<int[]> CheckGoalState()
+        //{
+        //    var Conflicts = new List<int[]>();
+
+        //    for (int i = 0; i < Queens.Count; i++)
+        //    {
+        //        var SubList = Queens.GetRange(i, Queens.Count - i);
+        //        int DescDiagonalIndex = Queens[i][0] - Queens[i][1];
+        //        int AscDiagnoalIndex = Queens[i][0] + Queens[i][1];
+
+        //        // Rows
+        //        Conflicts.AddRange(
+        //            SubList.Where(x => x[0] == Queens[i][0])
+        //        );
+
+        //        // Columns
+        //        Conflicts.AddRange(
+        //             SubList.Where(x => x[1] == Queens[i][1])
+        //        );
+
+        //        // Descending Diagonal
+        //        Conflicts.AddRange(
+        //            SubList.Where(x => x[0] - x[1] == DescDiagonalIndex)
+        //        );
+
+        //        // Ascending Diagnonal
+        //        Conflicts.AddRange(
+        //            SubList.Where(x => x[0] + x[1] == AscDiagnoalIndex)
+        //        );
+        //    }
+
+        //    return Conflicts;
+        //}   
+
+
+        public Conflicts CheckGoalState()
         {
-            var Conflicts = new List<int[]>();
+
+            var Conflicts = new Conflicts();
 
             for (int i = 0; i < Queens.Count; i++)
             {
@@ -94,29 +135,34 @@ namespace EightQueens
                 int DescDiagonalIndex = Queens[i][0] - Queens[i][1];
                 int AscDiagnoalIndex = Queens[i][0] + Queens[i][1];
 
+
                 // Rows
-                Conflicts.AddRange(
-                    SubList.Where(x => x[0] == Queens[i][0])
-                );
+                SubList.Where(queen => queen[0] == Queens[i][0]).ToList()
+                    .ForEach(conflict => Conflicts.Add(i, conflict));
 
-                // Columns
-                Conflicts.AddRange(
-                     SubList.Where(x => x[1] == Queens[i][1])
-                );
 
-                // Descending Diagonal
-                Conflicts.AddRange(
-                    SubList.Where(x => x[0] - x[1] == DescDiagonalIndex)
-                );
+            //    Conflicts[i].AddRange(
+            //        SubList.Where(x => x[0] == Queens[i][0])
+            //    );
 
-                // Ascending Diagnonal
-                Conflicts.AddRange(
-                    SubList.Where(x => x[0] + x[1] == AscDiagnoalIndex)
-                );
+            //    // Columns
+            //    Conflicts[i].AddRange(
+            //         SubList.Where(x => x[1] == Queens[i][1])
+            //    );
+
+            //    // Descending Diagonal
+            //    Conflicts[i].AddRange(
+            //        SubList.Where(x => x[0] - x[1] == DescDiagonalIndex)
+            //    );
+
+            //    // Ascending Diagnonal
+            //    Conflicts[i].AddRange(
+            //        SubList.Where(x => x[0] + x[1] == AscDiagnoalIndex)
+            //    );
             }
 
             return Conflicts;
-        }   
+        }
 
         public void Print()
         {
