@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text;
 
 namespace EightQueens
 {
@@ -10,7 +10,7 @@ namespace EightQueens
         public List<List<int>> State { get; set; }
         public List<int[]> Queens { get; set; }
 
-        // Key: Queen coordinates, Value: List of conflicting queens by coordinates.
+        // Wrapper around Dictionary, Key: Queen coordinates, Value: List of conflicting queens by coordinates.
         public Conflicts Conflicts { get; set; }
         public Board()
         {
@@ -83,6 +83,22 @@ namespace EightQueens
             return Queens;
         }
 
+        public bool MoveQueen(int _queen, int _distance)
+        {
+            int[] queen = this.Queens[_queen];
+            int newRow = queen[0] + _distance;
+
+            if (newRow >= 0 && newRow <= this.State.Count)
+            {
+                SetCell(newRow, queen[1], 1);
+                SetCell(queen[0], queen[1], 0);
+                return true;
+            }
+
+            return false;
+        }
+
+
         public Conflicts CheckGoalState()
         {
 
@@ -120,6 +136,24 @@ namespace EightQueens
             foreach (var subList in State)
                 Console.WriteLine(String.Join(" ", subList));
         }
+
+        public override String ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("Current Conflicts: ");
+            sb.Append(this.Conflicts.Table.Count);
+            sb.Append("\nCurrent State:\n");
+
+            this.State.ForEach(subList =>
+            {
+                sb.Append(String.Join(" ", subList));
+                sb.Append("\n");
+            });
+
+            return sb.ToString();
+        }
+
 
     }
 }

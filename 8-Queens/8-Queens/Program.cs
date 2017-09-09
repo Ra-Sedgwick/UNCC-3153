@@ -7,7 +7,7 @@ namespace EightQueens
         static void Main(string[] args)
         {
             Board Board = new Board();
-            Board.Print();
+            Console.WriteLine(Board);
 
             Console.ReadKey();
         }
