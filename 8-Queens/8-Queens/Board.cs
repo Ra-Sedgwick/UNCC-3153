@@ -35,8 +35,7 @@ namespace EightQueens
                 this.State[row][col] = value;
             }
 
-            if (value == 1)
-                this.Queens = GetQueens();
+            this.Queens = GetQueens();
         }
 
         public void SetRow(int index, List<int> row)
@@ -72,9 +71,10 @@ namespace EightQueens
         {
             var Queens = new List<int[]>();
 
+
             for (int row = 0; row < State.Count(); row++)
                 for (int col = 0; col < State.Count; col++)
-                    if (State[row][col] == 1)
+                    if (State[col][row] == 1)
                     {
                         var queen = new int[] { row, col };
                         Queens.Add(queen);
@@ -86,12 +86,12 @@ namespace EightQueens
         public bool MoveQueen(int _queen, int _distance)
         {
             int[] queen = this.Queens[_queen];
-            int newRow = queen[0] + _distance;
+            int newRow = queen[1] + _distance;
 
             if (newRow >= 0 && newRow <= this.State.Count)
             {
-                SetCell(newRow, queen[1], 1);
-                SetCell(queen[0], queen[1], 0);
+                SetCell(newRow, queen[0], 1);
+                SetCell(queen[1], queen[0], 0);
                 return true;
             }
 
