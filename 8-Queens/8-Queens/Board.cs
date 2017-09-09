@@ -83,9 +83,6 @@ namespace EightQueens
             return Queens;
         }
 
-
-
-
         public Conflicts CheckGoalState()
         {
 
