@@ -28,6 +28,8 @@ namespace EightQueens
         public Board(Board _board)
         {
             this.State = new List<List<int>>();
+            this.Queens = new List<int[]>();
+            this.Conflicts = new Conflicts();
 
             _board.State.ForEach(x => {
                 this.State.Add(new List<int>(x));
@@ -144,19 +146,19 @@ namespace EightQueens
                 {
                     // Check Columns
                     if (SubList[0][0] == SubList[j][0])
-                        this.Conflicts.Add(i, SubList[j]);
+                        this.Conflicts.Add(Queens[i], SubList[j]);
 
                     // Check Rows
                     if (SubList[0][1] == SubList[j][1])
-                        this.Conflicts.Add(i, SubList[j]);
+                        this.Conflicts.Add(Queens[i], SubList[j]);
 
                     // Check Descending Diagnonal 
                     if (SubList[0][0] - SubList[0][1] == SubList[j][0] - SubList[j][1])
-                        this.Conflicts.Add(i, SubList[j]);
+                        this.Conflicts.Add(Queens[i], SubList[j]);
 
                     // Check Ascending Diagonal
                     if (SubList[0][0] + SubList[0][1] == SubList[j][0] + SubList[j][1])
-                        this.Conflicts.Add(i, SubList[j]);
+                        this.Conflicts.Add(Queens[i], SubList[j]);
                 }
             }
         }
@@ -173,7 +175,7 @@ namespace EightQueens
             StringBuilder sb = new StringBuilder();
 
             sb.Append("Current Conflicts: ");
-            sb.Append(this.Conflicts.Table.Count);
+            sb.Append(this.Conflicts.Count);
             sb.Append("\nCurrent State:\n");
 
             this.State.ForEach(subList =>

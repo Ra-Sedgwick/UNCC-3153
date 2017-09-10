@@ -10,7 +10,13 @@ namespace EightQueens
         {
             Board Board = new Board(8);
             Console.WriteLine(Board);
-            var move = Board.NeighborStates.Min(state => state.Conflicts.Count);
+            Console.WriteLine(Board.Conflicts);
+            Console.WriteLine("\nNeighborStates");
+            Board.NeighborStates.ForEach(s => {
+                Console.WriteLine(s);
+                Console.WriteLine(s.Conflicts);
+                Console.WriteLine();
+            });
             Console.ReadKey();
         }
 
