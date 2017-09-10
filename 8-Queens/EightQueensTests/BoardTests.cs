@@ -50,9 +50,9 @@ namespace EightQueens.Tests
                 new int[] { 2, 7 },
                 new int[] { 3, 1 },
                 new int[] { 4, 6 },
-                new int[] { 5, 0 },             
+                new int[] { 5, 0 },
                 new int[] { 6, 2 },
-                new int[] { 7, 4 }              
+                new int[] { 7, 4 }
             };
 
             // Assert
@@ -95,7 +95,7 @@ namespace EightQueens.Tests
             IllegalUp = Board.MoveQueen(0, -2);
             LegalDown = Board.MoveQueen(1, 2);
             IllegalDown = Board.MoveQueen(1, 2);
-           
+
 
 
             // Assert
@@ -106,6 +106,21 @@ namespace EightQueens.Tests
             Assert.AreEqual(LegalDown, true);
             Assert.AreEqual(IllegalDown, false);
             CollectionAssert.AreEqual(Board.Queens[1], new int[] { 1, 7 });
+        }
+
+        [TestMethod()]
+        public void GetNeighborStatesTest()
+        {
+            // Arrange
+            int size = 8;
+            int PossibleStates = (size - 1) * size;
+            Board TrueBoard = Helpers.GetTrueSolution(size);
+
+            // Act
+            var NeightborStates = TrueBoard.GetNeighborStates();
+
+            // Assert
+            Assert.AreEqual(NeightborStates.Count, PossibleStates);
         }
     }
 
