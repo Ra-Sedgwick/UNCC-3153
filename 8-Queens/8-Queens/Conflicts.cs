@@ -31,11 +31,13 @@ namespace EightQueens
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append("Conflicts:\n");
+            sb.Append("Conflicts: ");
+            sb.Append(Count);
+
             
             foreach (var conflict in this.Table)
             {
-                sb.Append("Queen at: ");
+                sb.Append("\nQueen at: ");
                 sb.Append(String.Join("-", conflict.Key));
                 sb.Append(", conflicting with queens at:\n");
 

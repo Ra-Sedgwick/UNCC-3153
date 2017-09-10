@@ -17,6 +17,11 @@ namespace EightQueens
 
         public Board(int _size)
         {
+            this.State = new List<List<int>>();
+            this.Queens = new List<int[]>();
+            this.Conflicts = new Conflicts();
+            this.NeighborStates = new List<Board>();
+
             BuildState(_size);
             GetQueens();
             CheckGoalState();
@@ -115,7 +120,7 @@ namespace EightQueens
                 }
             }
 
-            this.NeighborStates.OrderBy(board => board.Conflicts.Table.Count);
+            this.NeighborStates = this.NeighborStates.OrderBy(board => board.Conflicts.Count).ToList();
         }
 
         public bool MoveQueen(int _queen, int _distance)
@@ -172,9 +177,15 @@ namespace EightQueens
         public override String ToString()
         {
             StringBuilder sb = new StringBuilder();
+            var BetterStates = new List<Board>();
+            if (this.NeighborStates != null)
+            {
+                BetterStates = this.NeighborStates.Where(state => state.Conflicts.Count < this.Conflicts.Count).ToList();
+            }
+            int BetterStateCount = (BetterStates.Any()) ? BetterStates.Count : 0;
+            String NewStateMsg = "Setting new current state with conflict count: ";
+            String RestartMsg = "Restart";
 
-            sb.Append("Current Conflicts: ");
-            sb.Append(this.Conflicts.Count);
             sb.Append("\nCurrent State:\n");
 
             this.State.ForEach(subList =>
@@ -182,6 +193,13 @@ namespace EightQueens
                 sb.Append(String.Join(" ", subList));
                 sb.Append("\n");
             });
+
+            sb.Append("\n");
+            sb.Append(this.Conflicts);
+            sb.Append("\nNeighbors found with fewer conflicts: ");
+            sb.Append(BetterStateCount);
+            sb.Append("\n");
+            sb.Append((BetterStateCount == 0) ? RestartMsg : NewStateMsg);
 
             return sb.ToString();
         }

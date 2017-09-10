@@ -8,18 +8,25 @@ namespace EightQueens
     {
         static void Main(string[] args)
         {
-
-            // TODO: Finding correct conflicts but NeighborStat.Conflicts still pointing to parent.
             Board Board = new Board(8);
-            Board.GetNeighborStates();
-            Console.WriteLine(Board);
-            Console.WriteLine(Board.Conflicts);
-            Console.WriteLine("\nNeighborStates");
-            Board.NeighborStates.ForEach(s => {
-                Console.WriteLine(s);
-                Console.WriteLine(s.Conflicts);
-                Console.WriteLine();
-            });
+
+            do
+            {
+                Board.GetNeighborStates();
+                Console.WriteLine(Board);
+
+                var BetterStates = Board.NeighborStates
+                    .Where(state => state.Conflicts.Count < Board.Conflicts.Count)
+                    .ToList();
+
+                if (BetterStates.Any())
+                    Board = new Board(Board.NeighborStates[0]);
+
+            } while (Board.Conflicts.Count != 0);
+
+            Console.WriteLine("Solution Fountd");
+            Console.Write(Board);
+            
             Console.ReadKey();
         }
 
