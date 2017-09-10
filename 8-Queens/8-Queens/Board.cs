@@ -20,7 +20,6 @@ namespace EightQueens
             BuildState(_size);
             GetQueens();
             CheckGoalState();
-            GetNeighborStates();
 
         }
 
@@ -28,8 +27,6 @@ namespace EightQueens
         public Board(Board _board)
         {
             this.State = new List<List<int>>();
-            this.Queens = new List<int[]>();
-            this.Conflicts = new Conflicts();
 
             _board.State.ForEach(x => {
                 this.State.Add(new List<int>(x));
@@ -47,6 +44,7 @@ namespace EightQueens
             {
                 this.State[row][col] = value;
                 GetQueens();
+                CheckGoalState();
                 return true;
             }
 
@@ -59,6 +57,7 @@ namespace EightQueens
             {
                 this.State[index] = row;
                 GetQueens();
+                CheckGoalState();
                 return true;
             }
 
