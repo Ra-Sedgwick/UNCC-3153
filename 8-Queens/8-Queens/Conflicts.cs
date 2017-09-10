@@ -9,11 +9,14 @@ namespace EightQueens
     public class Conflicts
     {
         public Dictionary<int, List<int[]>> Table { get; set; }
+        public int Count { get; set; }
 
         public Conflicts()
         {
             Table = new Dictionary<int, List<int[]>>();
+            Count = 0;
         }
+
 
         public void Add(int queen, int[] coord)
         {
@@ -21,6 +24,7 @@ namespace EightQueens
                 Table.Add(queen, new List<int[]>());
 
             Table[queen].Add(coord);
+            Count++;
         }
     }
 }

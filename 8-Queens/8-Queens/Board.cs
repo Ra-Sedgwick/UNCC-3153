@@ -114,7 +114,7 @@ namespace EightQueens
                 }
             }
 
-            //.NeighborStates.OrderBy(board => board.Conflicts.Table.Count).ToList();
+            this.NeighborStates.OrderBy(board => board.Conflicts.Table.Count);
         }
 
         public bool MoveQueen(int _queen, int _distance)
@@ -140,14 +140,13 @@ namespace EightQueens
             for (int i = 0; i < Queens.Count; i++)
             {
                 var SubList = Queens.GetRange(i, Queens.Count - i);
-                Console.WriteLine(SubList);
                 for (int j = 1; j < SubList.Count; j++)
                 {
-                    // Check Rows
+                    // Check Columns
                     if (SubList[0][0] == SubList[j][0])
                         this.Conflicts.Add(i, SubList[j]);
 
-                    // Check Columns
+                    // Check Rows
                     if (SubList[0][1] == SubList[j][1])
                         this.Conflicts.Add(i, SubList[j]);
 
@@ -162,7 +161,6 @@ namespace EightQueens
             }
         }
 
-        
 
         public void Print()
         {
@@ -175,7 +173,7 @@ namespace EightQueens
             StringBuilder sb = new StringBuilder();
 
             sb.Append("Current Conflicts: ");
-            //sb.Append(this.Conflicts.Table.Count);
+            sb.Append(this.Conflicts.Table.Count);
             sb.Append("\nCurrent State:\n");
 
             this.State.ForEach(subList =>
