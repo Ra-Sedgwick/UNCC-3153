@@ -28,6 +28,18 @@ namespace EightQueens
 
         }
 
+        // Copy Constructor
+        public Board(Board _board)
+        {
+            this.State = new List<List<int>>();
+
+            _board.State.ForEach(x => {
+                this.State.Add(new List<int>(x));
+            });
+            this.Queens = GetQueens();
+            this.Conflicts = CheckGoalState();
+        }
+
         public void SetCell(int row, int col, int value)
         {
             if (value == 0 || value == 1)
@@ -83,6 +95,26 @@ namespace EightQueens
             return Queens;
         }
 
+        public List<Board> GetNeighborStates()
+        {
+            List<Board> NeighborStates = new List<Board>();
+
+            for (int q = 0; q < Queens.Count; q++)
+            {
+                int Floor = this.Queens[q][1] * -1;
+                int Ceiling = (this.Queens.Count - 1) - this.Queens[q][1];
+
+                for (int i = Floor; i < Ceiling; i++)
+                {
+                    Board NewState = new Board(this);
+                    NewState.MoveQueen(q, i);
+                    NeighborStates.Add(NewState);
+                }
+            }
+
+            return NeighborStates.OrderBy(board => board.Conflicts.Table.Count).ToList();
+        }
+
         public bool MoveQueen(int _queen, int _distance)
         {
             int[] queen = this.Queens[_queen];
@@ -130,6 +162,8 @@ namespace EightQueens
 
             return Conflicts;
         }
+
+        
 
         public void Print()
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace EightQueens
 {
@@ -7,10 +9,12 @@ namespace EightQueens
         static void Main(string[] args)
         {
             Board Board = new Board();
-            Console.WriteLine(Board);
-
+            Board.GetNeighborStates();
             Console.ReadKey();
         }
+
+        
+
     }
 }
 
