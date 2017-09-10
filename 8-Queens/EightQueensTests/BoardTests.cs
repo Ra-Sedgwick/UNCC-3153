@@ -71,12 +71,12 @@ namespace EightQueens.Tests
             Board FalseBoard = Helpers.GetFalseSolution(size);
 
             // Act
-            Conflicts TrueSolutionConflicts = TrueBoard.CheckGoalState();
-            Conflicts FalseSolutionConflicts = FalseBoard.CheckGoalState();
+            var TrueSolutionConflicts = TrueBoard.Conflicts.Table.Count;
+            var FalseSolutionConflicts = FalseBoard.Conflicts.Table.Count;
 
             // Assert
             Assert.IsNotNull(TrueSolutionConflicts);
-            Assert.AreNotEqual(FalseSolutionConflicts.Table.Count, 0);
+            Assert.AreNotEqual(FalseSolutionConflicts, 0);
         }
 
         [TestMethod()]
@@ -117,10 +117,10 @@ namespace EightQueens.Tests
             Board TrueBoard = Helpers.GetTrueSolution(size);
 
             // Act
-            var NeightborStates = TrueBoard.GetNeighborStates();
+            var NeightborStates = TrueBoard.NeighborStates.Count;
 
             // Assert
-            Assert.AreEqual(NeightborStates.Count, PossibleStates);
+            Assert.AreEqual(NeightborStates, PossibleStates);
         }
     }
 

@@ -8,8 +8,8 @@ namespace EightQueens
     {
         static void Main(string[] args)
         {
-            Board Board = new Board();
-            Board.GetNeighborStates();
+            Board Board = new Board(8);
+            Console.WriteLine(Board);
             Console.ReadKey();
         }
 

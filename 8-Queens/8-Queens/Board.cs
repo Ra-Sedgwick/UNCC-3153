@@ -9,22 +9,18 @@ namespace EightQueens
     {
         public List<List<int>> State { get; set; }
         public List<int[]> Queens { get; set; }
+        public List<Board> NeighborStates { get; set; }
 
         // Wrapper around Dictionary, Key: Queen coordinates, Value: List of conflicting queens by coordinates.
         public Conflicts Conflicts { get; set; }
-        public Board()
-        {
-            this.State = BuildState(8);
-            this.Queens = GetQueens();
-            this.Conflicts = CheckGoalState();
-            
-        }
+
 
         public Board(int _size)
         {
-            this.State = BuildState(_size);
-            this.Queens = GetQueens();
-            this.Conflicts = CheckGoalState();
+            BuildState(_size);
+            GetQueens();
+            CheckGoalState();
+            GetNeighborStates();
 
         }
 
@@ -36,36 +32,47 @@ namespace EightQueens
             _board.State.ForEach(x => {
                 this.State.Add(new List<int>(x));
             });
-            this.Queens = GetQueens();
-            this.Conflicts = CheckGoalState();
+
+            GetQueens();
+            CheckGoalState();
         }
 
-        public void SetCell(int row, int col, int value)
+        public bool SetCell(int row, int col, int value)
         {
-            if (value == 0 || value == 1)
+            if ( (value == 0 || value == 1) &&
+                 (row >= 0 && row < this.State.Count) &&
+                 (col >= 0 && col < this.State.Count) )
             {
                 this.State[row][col] = value;
+                GetQueens();
+                return true;
             }
 
-            this.Queens = GetQueens();
+            return false;
         }
 
-        public void SetRow(int index, List<int> row)
+        public bool SetRow(int index, List<int> row)
         {
-            this.State[index] = row;
-            this.Queens = GetQueens();
+            if (index >= 0 && index < this.State.Count)
+            {
+                this.State[index] = row;
+                GetQueens();
+                return true;
+            }
+
+            return false;
         }
 
-        private List<List<int>> BuildState(int _size)
+        private void BuildState(int _size)
         {
-            State = new List<List<int>>();
+            this.State = new List<List<int>>();
             Random Random = new Random();
 
             // Initialzie board state with all zeros.
             for (int i = 0; i < _size; i++)
             {
                 var SubList = Enumerable.Repeat(0, _size).ToList();
-                State.Add(SubList);
+                this.State.Add(SubList);
 
             }
 
@@ -73,31 +80,26 @@ namespace EightQueens
             for (int i = 0; i < _size; i++)
             {
                 int queen = Random.Next(0, _size);
-                State[queen][i] = 1;
+                this.State[queen][i] = 1;
             }
-
-            return State;
         }
 
-        private List<int[]> GetQueens()
+        private void GetQueens()
         {
-            var Queens = new List<int[]>();
-
+            this.Queens = new List<int[]>();
 
             for (int row = 0; row < State.Count(); row++)
                 for (int col = 0; col < State.Count; col++)
                     if (State[col][row] == 1)
                     {
                         var queen = new int[] { row, col };
-                        Queens.Add(queen);
+                        this.Queens.Add(queen);
                     }
-
-            return Queens;
         }
 
-        public List<Board> GetNeighborStates()
+        public void GetNeighborStates()
         {
-            List<Board> NeighborStates = new List<Board>();
+            this.NeighborStates = new List<Board>();
 
             for (int q = 0; q < Queens.Count; q++)
             {
@@ -108,11 +110,11 @@ namespace EightQueens
                 {
                     Board NewState = new Board(this);
                     NewState.MoveQueen(q, i);
-                    NeighborStates.Add(NewState);
+                    this.NeighborStates.Add(NewState);
                 }
             }
 
-            return NeighborStates.OrderBy(board => board.Conflicts.Table.Count).ToList();
+            //.NeighborStates.OrderBy(board => board.Conflicts.Table.Count).ToList();
         }
 
         public bool MoveQueen(int _queen, int _distance)
@@ -131,36 +133,33 @@ namespace EightQueens
         }
 
 
-        public Conflicts CheckGoalState()
+        public void CheckGoalState()
         {
-
-            var Conflicts = new Conflicts();
+            this.Conflicts = new Conflicts();
 
             for (int i = 0; i < Queens.Count; i++)
             {
                 var SubList = Queens.GetRange(i, Queens.Count - i);
-
+                Console.WriteLine(SubList);
                 for (int j = 1; j < SubList.Count; j++)
                 {
                     // Check Rows
                     if (SubList[0][0] == SubList[j][0])
-                        Conflicts.Add(i, SubList[j]);
+                        this.Conflicts.Add(i, SubList[j]);
 
                     // Check Columns
                     if (SubList[0][1] == SubList[j][1])
-                        Conflicts.Add(i, SubList[j]);
+                        this.Conflicts.Add(i, SubList[j]);
 
                     // Check Descending Diagnonal 
                     if (SubList[0][0] - SubList[0][1] == SubList[j][0] - SubList[j][1])
-                        Conflicts.Add(i, SubList[j]);
+                        this.Conflicts.Add(i, SubList[j]);
 
                     // Check Ascending Diagonal
                     if (SubList[0][0] + SubList[0][1] == SubList[j][0] + SubList[j][1])
-                        Conflicts.Add(i, SubList[j]);
+                        this.Conflicts.Add(i, SubList[j]);
                 }
             }
-
-            return Conflicts;
         }
 
         
@@ -176,7 +175,7 @@ namespace EightQueens
             StringBuilder sb = new StringBuilder();
 
             sb.Append("Current Conflicts: ");
-            sb.Append(this.Conflicts.Table.Count);
+            //sb.Append(this.Conflicts.Table.Count);
             sb.Append("\nCurrent State:\n");
 
             this.State.ForEach(subList =>
