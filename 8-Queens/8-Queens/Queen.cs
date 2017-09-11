@@ -18,18 +18,31 @@ namespace EightQueens
             Y = _y;
             Conflicts = new HashSet<Queen>();
         }
-    }
 
-    public class QueenComparer : IComparer<Queen>
-    {
-        public int Compare(Queen x, Queen y)
+        public override string ToString()
         {
-            if (x.Y < y.Y)
-                return -1;
-            else if (x.Y == x.Y)
-                return 0;
-            else
-                return 1;
+            StringBuilder sb = new StringBuilder();
+
+            if (Conflicts.Any())
+            {
+                sb.Append("Queen:  ");
+                sb.Append(X);
+                sb.Append("-");
+                sb.Append(Y);
+                sb.Append(", Conflicts at:\n");
+
+                foreach (var queen in Conflicts)
+                {
+                    sb.Append("\t");
+                    sb.Append(queen.X);
+                    sb.Append("-");
+                    sb.Append(queen.Y);
+                    sb.AppendLine();
+                }
+            }
+           
+
+            return sb.ToString();
         }
     }
 }

@@ -22,8 +22,6 @@ namespace EightQueens
         {
             if (_x.Conflicts < _y.Conflicts)
                 return -1;
-            if (_x.Conflicts == _y.Conflicts)
-                return 0;
             else
                 return 1;
         }

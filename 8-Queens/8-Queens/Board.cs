@@ -8,16 +8,9 @@ namespace EightQueens
     public class Board
     {
         public List<List<int>> State { get; set; }
-        //public List<int[]> Queens { get; set; }
         public List<Queen> Queens { get; set; }
-        //public List<Board> NeighborStates { get; set; }
         public NeighborStates Neighbors { get; set; }
-
         public int Conflicts { get; set; }
-
-        // Wrapper around Dictionary, Key: Queen coordinates, Value: List of conflicting queens by coordinates.
-        //public Conflicts Conflicts { get; set; }
-
 
         public Board(int _size)
         {
@@ -29,7 +22,6 @@ namespace EightQueens
             BuildState(_size);
             GetQueens();
             GetConflits();
-
         }
 
         // Copy Constructor
@@ -40,9 +32,7 @@ namespace EightQueens
             Neighbors = new NeighborStates();
             Conflicts = 0;
 
-            _board.State.ForEach(row => {
-                this.State.Add(new List<int>(row));
-            });
+            _board.State.ForEach(row => State.Add( new List<int>(row) ));
 
             GetQueens();
             GetConflits();
@@ -51,10 +41,10 @@ namespace EightQueens
         public bool SetCell(int row, int col, int value)
         {
             if ( (value == 0 || value == 1) &&
-                 (row >= 0 && row < this.State.Count) &&
-                 (col >= 0 && col < this.State.Count) )
+                 (row >= 0 && row < State.Count) &&
+                 (col >= 0 && col < State.Count) )
             {
-                this.State[row][col] = value;
+                State[row][col] = value;
                 GetQueens();
                 GetConflits();
                 return true;
@@ -65,9 +55,9 @@ namespace EightQueens
 
         public bool SetRow(int index, List<int> row)
         {
-            if (index >= 0 && index < this.State.Count)
+            if (index >= 0 && index < State.Count)
             {
-                this.State[index] = row;
+                State[index] = row;
                 GetQueens();
                 GetConflits();
                 return true;
@@ -78,14 +68,14 @@ namespace EightQueens
 
         private void BuildState(int _size)
         {
-            this.State = new List<List<int>>();
+            State = new List<List<int>>();
             Random Random = new Random();
 
             // Initialzie board state with all zeros.
             for (int i = 0; i < _size; i++)
             {
                 var SubList = Enumerable.Repeat(0, _size).ToList();
-                this.State.Add(SubList);
+                State.Add(SubList);
 
             }
 
@@ -125,7 +115,6 @@ namespace EightQueens
                     Neighbors.Table.Add(NewState);
                 }
             }
-
         }
 
         public bool MoveQueen(int _queen, int _distance)
@@ -133,7 +122,7 @@ namespace EightQueens
             Queen queen = Queens[_queen];
             int newRow = queen.Y + _distance;
 
-            if (newRow >= 0 && newRow <= this.State.Count)
+            if (newRow >= 0 && newRow <= State.Count)
             {
                 SetCell(newRow, queen.X, 1);
                 SetCell(queen.Y, queen.X, 0);
@@ -178,20 +167,66 @@ namespace EightQueens
 
         public void Print()
         {
-            foreach (var subList in State)
-                Console.WriteLine(String.Join(" ", subList));
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("Current State:\n");
+
+            this.State.ForEach(subList =>
+            {
+                sb.Append(String.Join(" ", subList));
+                sb.Append("\n");
+            });
+
+            Console.WriteLine(sb);
+        }
+
+        public void PrintConflicts()
+        {
+            StringBuilder sb = new StringBuilder();
+            
+            if (Conflicts > 0)
+            {
+                sb.Append("Conflicts: ");
+                sb.Append(Conflicts);
+                sb.AppendLine();
+
+                Queens.ForEach(queen => {
+                   
+
+                    if (queen.Conflicts.Any())
+                    {
+                        sb.Append("Queen:  ");
+                        sb.Append(queen.X);
+                        sb.Append("-");
+                        sb.Append(queen.Y);
+                        sb.Append(", conflicts at:\n");
+                        foreach (var conflict in queen.Conflicts)
+                        {
+                            sb.Append("\t");
+                            sb.Append(conflict.X);
+                            sb.Append("-");
+                            sb.Append(conflict.Y);
+                            sb.AppendLine();
+                        }
+                        sb.AppendLine();
+                    }
+
+                });
+            }
+            else
+            {
+                sb.Append("No Conflicts");
+            }
+
+            Console.Write(sb);
         }
 
         public override String ToString()
         {
             StringBuilder sb = new StringBuilder();
-            var BetterStates = new List<Board>();
-            
-            int BetterStateCount = (BetterStates.Any()) ? BetterStates.Count : 0;
-            String NewStateMsg = "Setting new current state with conflict count: ";
-            String RestartMsg = "Restart";
 
-            sb.Append("\nCurrent State:\n");
+
+            sb.Append("Current State:\n");
 
             this.State.ForEach(subList =>
             {
@@ -200,11 +235,7 @@ namespace EightQueens
             });
 
             sb.Append("\n");
-            sb.Append(this.Conflicts);
-            sb.Append("\nNeighbors found with fewer conflicts: ");
-            sb.Append(BetterStateCount);
-            sb.Append("\n");
-            sb.Append((BetterStateCount == 0) ? RestartMsg : NewStateMsg);
+   
 
             return sb.ToString();
         }
