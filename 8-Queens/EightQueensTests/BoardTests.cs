@@ -58,7 +58,8 @@ namespace EightQueens.Tests
             // Assert
             for (int i = 0; i < size; i++)
             {
-                CollectionAssert.AreEqual(Board.Queens[i], TargetQueens[i]);
+                Assert.AreEqual(Board.Queens[i].X, TargetQueens[i][0]);
+                Assert.AreEqual(Board.Queens[i].Y, TargetQueens[i][1]);
             }
         }
 
@@ -71,8 +72,8 @@ namespace EightQueens.Tests
             Board FalseBoard = Helpers.GetFalseSolution(size);
 
             // Act
-            var TrueSolutionConflicts = TrueBoard.Conflicts.Table.Count;
-            var FalseSolutionConflicts = FalseBoard.Conflicts.Table.Count;
+            var TrueSolutionConflicts = TrueBoard.Conflicts;
+            var FalseSolutionConflicts = FalseBoard.Conflicts;
 
             // Assert
             Assert.IsNotNull(TrueSolutionConflicts);
@@ -101,11 +102,14 @@ namespace EightQueens.Tests
             // Assert
             Assert.AreEqual(LegalUp, true);
             Assert.AreEqual(IllegalUp, false);
-            CollectionAssert.AreEqual(Board.Queens[0], new int[] { 0, 1 });
+            Assert.AreEqual(Board.Queens[0].X, 0);
+            Assert.AreEqual(Board.Queens[0].Y, 1);
 
             Assert.AreEqual(LegalDown, true);
             Assert.AreEqual(IllegalDown, false);
-            CollectionAssert.AreEqual(Board.Queens[1], new int[] { 1, 7 });
+            Assert.AreEqual(Board.Queens[1].X, 1);
+            Assert.AreEqual(Board.Queens[1].Y, 7);
+
         }
 
         [TestMethod()]
@@ -117,10 +121,10 @@ namespace EightQueens.Tests
             Board TrueBoard = Helpers.GetTrueSolution(size);
 
             // Act
-            var NeightborStates = TrueBoard.NeighborStates.Count;
+            TrueBoard.GetNeighborStates();
 
             // Assert
-            Assert.AreEqual(NeightborStates, PossibleStates);
+            Assert.AreNotEqual(TrueBoard.Neighbors.Table.Count, 0);
         }
     }
 
