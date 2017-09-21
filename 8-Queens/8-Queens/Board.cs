@@ -95,6 +95,8 @@ namespace EightQueens
                 for (int col = 0; col < State.Count; col++)
                     if (State[col][row] == 1)
                         Queens.Add(new Queen(row, col));
+
+            
         }
 
 
@@ -105,14 +107,19 @@ namespace EightQueens
 
             for (int q = 0; q < Queens.Count; q++)
             {
+                
                 int Floor = Queens[q].Y * -1;
-                int Ceiling = (Queens.Count - 1) - Queens[q].Y;
+                int SkipIndex = Floor + Queens[q].Y;
+                int Ceiling = (Queens.Count) - Queens[q].Y;
 
                 for (int i = Floor; i < Ceiling; i++)
                 {
-                    Board NewState = new Board(this);
-                    NewState.MoveQueen(q, i);
-                    Neighbors.Table.Add(NewState);
+                    if (i != SkipIndex)
+                    {
+                        Board NewState = new Board(this);
+                        NewState.MoveQueen(q, i);
+                        Neighbors.Table.Add(NewState);
+                    }
                 }
             }
         }
@@ -122,10 +129,22 @@ namespace EightQueens
             Queen queen = Queens[_queen];
             int newRow = queen.Y + _distance;
 
+            if (newRow > 7 || newRow < 0)
+            {
+                Console.WriteLine("error");
+            }
+
             if (newRow >= 0 && newRow <= State.Count)
             {
                 SetCell(newRow, queen.X, 1);
                 SetCell(queen.Y, queen.X, 0);
+               // this.Print();
+               // if (Queens.Count != 8)
+               // {
+               //     Console.WriteLine("Error: " + Queens.Count);
+
+               // }
+               //// Console.ReadKey();
                 return true;
             }
 

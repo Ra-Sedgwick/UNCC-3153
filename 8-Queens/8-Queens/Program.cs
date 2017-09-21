@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace EightQueens
 {
@@ -11,7 +10,7 @@ namespace EightQueens
         public static int Resets = 0;
 
         static void Main(string[] args)
-        {            
+        {
             do
             {
                 Board.GetNeighborStates();
