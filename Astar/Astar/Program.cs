@@ -8,8 +8,12 @@ namespace Astar
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            void Test()
+            {
+                Console.Out.WriteLine("Test");
+            }
         }
     }
 }
