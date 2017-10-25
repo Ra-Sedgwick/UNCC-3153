@@ -14,12 +14,6 @@ namespace AStar
         public Vector2 Sprite { get; set; }
         public List<List<Cell>> State { get; set; }
 
-        private readonly char spriteChar = '@';
-        private readonly char goalChar = 'G';
-        private readonly char startChar = 'S';
-
-
-
         public Board(int size)
         {
             Size = size;
@@ -30,10 +24,7 @@ namespace AStar
         {
             Start = start;
             Sprite = start;
-            Goal = goal;
-
-            
-
+            Goal = goal
 
             for (int i = 0; i < Size; i++)
             {
