@@ -1,0 +1,7 @@
+C:\Users\rased\projects\UNCC\UNCC-3153\AStar\AStar\obj\Debug\AStar.csprojResolveAssemblyReference.cache
+C:\Users\rased\projects\UNCC\UNCC-3153\AStar\AStar\obj\Debug\AStar.csproj.CoreCompileInputs.cache
+C:\Users\rased\projects\UNCC\UNCC-3153\AStar\AStar\bin\Debug\AStar.exe.config
+C:\Users\rased\projects\UNCC\UNCC-3153\AStar\AStar\bin\Debug\AStar.exe
+C:\Users\rased\projects\UNCC\UNCC-3153\AStar\AStar\bin\Debug\AStar.pdb
+C:\Users\rased\projects\UNCC\UNCC-3153\AStar\AStar\obj\Debug\AStar.exe
+C:\Users\rased\projects\UNCC\UNCC-3153\AStar\AStar\obj\Debug\AStar.pdb

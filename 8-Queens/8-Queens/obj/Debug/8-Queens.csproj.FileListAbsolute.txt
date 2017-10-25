@@ -1,0 +1,6 @@
+C:\Users\rased\projects\UNCC-3153\8-Queens\8-Queens\bin\Debug\8-Queens.exe.config
+C:\Users\rased\projects\UNCC-3153\8-Queens\8-Queens\bin\Debug\8-Queens.exe
+C:\Users\rased\projects\UNCC-3153\8-Queens\8-Queens\bin\Debug\8-Queens.pdb
+C:\Users\rased\projects\UNCC-3153\8-Queens\8-Queens\obj\Debug\8-Queens.csprojResolveAssemblyReference.cache
+C:\Users\rased\projects\UNCC-3153\8-Queens\8-Queens\obj\Debug\8-Queens.exe
+C:\Users\rased\projects\UNCC-3153\8-Queens\8-Queens\obj\Debug\8-Queens.pdb
