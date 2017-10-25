@@ -9,41 +9,38 @@ namespace AStar
     class Board
     {
         public int Size { get; set; }
-        public Vector2 Start { get; set; }
-        public Vector2 Goal { get; set; }
-        public Vector2 Sprite { get; set; }
-        public List<List<Cell>> State { get; set; }
+        public Node Start { get; set; }
+        public Node Goal { get; set; }
+        public Node Sprite { get; set; }
+        public List<List<Node>> State { get; set; }
 
         public Board(int size)
         {
             Size = size;
-            State = new List<List<Cell>>();
+            State = new List<List<Node>>();
         }
 
-        public void Initialize(Vector2 start, Vector2 goal)
+        public void Initialize(Node start, Node goal)
         {
             Start = start;
             Sprite = start;
-            Goal = goal
+            Goal = goal;
 
             for (int i = 0; i < Size; i++)
             {
-                State.Add(new List<Cell>());
+                State.Add(new List<Node>());
                 for (int j = 0; j < Size; j++)
                 {
-                    State[i].Add(new Cell(i, j, true));
+                    State[i].Add(new Node(i, j, true));
                 }
             }
 
             SetImpassible();
-            State[start.X][start.Y].IsStart = true;
-            State[start.X][start.Y].IsSprite = true;
-            State[goal.X][goal.Y].IsGoal = true; 
         }
 
         
 
-        public bool MoveSprite(Vector2 vector2)
+        public bool MoveSprite(Node Node)
         {
             throw new NotImplementedException();
         }
@@ -52,14 +49,14 @@ namespace AStar
         {
             int cellCount = (int) Math.Round(Size * Size * 0.1, 2);
             Random random = new Random(Guid.NewGuid().GetHashCode());
-            List<Vector2> impassableCells = new List<Vector2>();
-            Vector2 v; 
+            List<Node> impassableCells = new List<Node>();
+            Node v; 
 
             for (int i = 0; i < cellCount; i++)
             {
                 while (true)
                 {
-                    v = new Vector2(random.Next(0, Size), random.Next(0, Size));
+                    v = new Node(random.Next(0, Size), random.Next(0, Size), false);
                     if (!impassableCells.Contains(v))
                     {
                         impassableCells.Add(v);
@@ -78,11 +75,31 @@ namespace AStar
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (List<Cell> rows in State)
+            foreach (List<Node> rows in State)
             {
-                foreach (Cell cell in rows)
+                foreach (Node node in rows)
                 {
-                    sb.Append(cell.GetGraphic());
+                    if (node.Equals(Start) && Start.Equals(Sprite))
+                        sb.Append("S/@");
+
+                    else if (node.Equals(Goal) && Goal.Equals(Sprite))
+                        sb.Append("G/@");
+
+                    else if (node.Equals(Start))
+                        sb.Append("S");
+
+                    else if (node.Equals(Goal))
+                        sb.Append("G");
+
+                    else if (node.Equals(Sprite))
+                        sb.Append("@");
+
+                    else if (node.IsPassable)
+                        sb.Append("*");
+
+                    else
+                        sb.Append("X");
+
                     sb.Append(" ");
                 }
                 sb.AppendLine();
