@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MinHeap;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,10 +15,18 @@ namespace AStar
         public Node Sprite { get; set; }
         public List<List<Node>> State { get; set; }
 
+        // Nodes Adjacent to Sprite 
+        public MinHeap<Node> OpenList { get; set; }
+
+        // Known Nodes
+        public List<Node> ClosedList { get; set; }
+
         public Board(int size)
         {
             Size = size;
             State = new List<List<Node>>();
+            OpenList = new MinHeap<Node>();
+            ClosedList = new List<Node>();
         }
 
         public void Initialize(Node start, Node goal)
@@ -40,8 +49,23 @@ namespace AStar
 
         
 
-        public bool MoveSprite(Node Node)
+        public bool MoveSprite()
         {
+            List<Node> possibleMoves = GetWalkableNodes(Sprite);
+
+            possibleMoves.ForEach(n =>
+            {
+                if (!ClosedList.Contains(n))
+                {
+                    if (!OpenList.Contains(n))
+                    {
+                        GetF(n);
+                        OpenList.Enqueue(n);
+                    }
+                }
+            });
+
+            int x = 10;
             throw new NotImplementedException();
         }
 
@@ -70,6 +94,75 @@ namespace AStar
                 State[c.X][c.Y].IsPassable = false; 
             });
 
+        }
+
+        public List<Node> GetWalkableNodes(Node node)
+        {
+            int x, y;
+            List<Node> moves = new List<Node>();
+
+            // Move up
+            x = node.X;
+            y = node.Y - 1;
+
+            if (IsLegalMove(x, y))
+                moves.Add(State[x][y]);
+
+            // Move right
+            x = node.X + 1;
+            y = node.Y;
+
+            if (IsLegalMove(x, y))
+                moves.Add(State[x][y]);
+
+            // Move down
+            x = node.X;
+            y = node.Y + 1;
+
+            if (IsLegalMove(x, y))
+                moves.Add(State[x][y]);
+
+            // Move left
+            x = node.X - 1;
+            y = node.Y;
+
+            if (IsLegalMove(x, y))
+                moves.Add(State[x][y]);
+
+            return moves;
+        }
+
+        public int? GetG(Node node)
+        {
+            if (node.G != null)
+                return node.G;
+
+            node.G = node.Distance(Start);
+            return node.G;
+
+        }
+
+        public int? GetH(Node node)
+        {
+            if (node.H != null)
+                return node.H;
+
+            node.H = node.Distance(Goal);
+            return node.H;
+        }
+
+        public int? GetF(Node node)
+        {
+            if (node.F != null)
+                return node.F;
+
+            node.F = GetG(node) + GetH(node);
+            return node.F;
+        }
+
+        private bool IsLegalMove(int x, int y)
+        {
+            return (x >= 0 && x < Size) && (y >= 0 && y < Size);
         }
 
         public override string ToString()
@@ -105,7 +198,6 @@ namespace AStar
                 sb.AppendLine();
             }
 
-        
 
             return sb.ToString();
         }
