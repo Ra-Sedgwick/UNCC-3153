@@ -77,7 +77,6 @@ namespace AStar
 
         public List<Node> AStar()
         {
-            List<Node> possibleMoves;
 
             // Pop off lowest F
             int? min = OpenList.Min(n => n.F);
@@ -93,26 +92,36 @@ namespace AStar
 
             else
             {
-                possibleMoves = GetPassibleNodes(current);
+                //possibleMoves = GetPassibleNodes(current);
+                OpenList = GetPassibleNodes(current);
+                List<Node> toRemove = new List<Node>();
 
-                possibleMoves.ForEach(n =>
+                OpenList.ForEach(n =>
                 {
-                    if (!ClosedList.Contains(n))        // Dont move to an already visited Node
-                    {
+                    if (ClosedList.Contains(n))
+                        toRemove.Add(n);
+                    else
                         GetF(n);
-                        if (!OpenList.Contains(n))
-                        {
-                            n.Parent = current;
-                            OpenList.Add(n);
-                        }
-                    }
                 });
+
+                toRemove.ForEach(n => OpenList.Remove(n));
+
+                //possibleMoves.ForEach(n =>
+                //{
+                //    if (!ClosedList.Contains(n))        // Dont move to an already visited Node
+                //    {
+                //        GetF(n);
+                //        if (!OpenList.Contains(n))
+                //        {
+                //            n.Parent = current;
+                //            OpenList.Add(n);
+                //        }
+                //    }
+                //});
             }
 
-            Sprite = current;
-
             ClosedList.Push(current);
-            Console.WriteLine(this);
+
 
             return null;
         }
@@ -334,7 +343,9 @@ namespace AStar
             sb.Append("Path: Start = ");
 
             path.ForEach(n => sb.Append($"[{n.X}, {n.Y}] => "));
-            sb.AppendLine("Goal!");
+            sb.AppendLine("Goal!\n");
+
+            sb.Append("Key: Start: s, Current: @, Goal: G, Passible: *, Impassible: X");
 
             Console.WriteLine(sb);
 
@@ -345,7 +356,7 @@ namespace AStar
                 Console.ReadKey();
             });
 
-            Console.WriteLine(sb.ToString());
+            Console.WriteLine($"Goal Reached in {path.Count} moves.");
         }
 
         public override string ToString()
