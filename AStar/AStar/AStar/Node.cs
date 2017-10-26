@@ -64,5 +64,10 @@ namespace AStar
             else
                 throw new ArgumentException("Object not a Node.");
         }
+
+        public override string ToString()
+        {
+            return (IsPassable) ? $"[{X}, {Y}] F{F} G{G} H{H} P => [{Parent.X}, {Parent.Y}]" : $"Not Passible [{X}, {Y}]";
+        }
     }
 }

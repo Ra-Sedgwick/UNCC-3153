@@ -1,5 +1,4 @@
-﻿using MinHeap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,17 +15,17 @@ namespace AStar
         public List<List<Node>> State { get; set; }
 
         // Availible Moves
-        public MinHeap<Node> OpenList { get; set; }
+        public List<Node> OpenList { get; set; }
 
         // Nodes Already Moved to
-        public List<Node> ClosedList { get; set; }
+        public Stack<Node> ClosedList { get; set; }
 
         public Board(int size)
         {
             Size = size;
             State = new List<List<Node>>();
-            OpenList = new MinHeap<Node>();
-            ClosedList = new List<Node>();
+            OpenList = new List<Node>();
+            ClosedList = new Stack<Node>();
         }
 
         public void Initialize(Node start, Node goal)
@@ -35,6 +34,7 @@ namespace AStar
             Sprite = start;
             Goal = goal;
 
+            // Initialize All Nodes on board with coordinates and passible 
             for (int i = 0; i < Size; i++)
             {
                 State.Add(new List<Node>());
@@ -44,27 +44,75 @@ namespace AStar
                 }
             }
 
+            // Set 10% of Nodes as Impassible
             SetImpassibleNodes();
+
+            // Add Start Node to Open List
+            GetF(Start);
+            OpenList.Add(Start);
+
         }
 
-        
-
-        public bool MoveSprite()
+        public List<Node> GetPath()
         {
-            List<Node> possibleMoves = GetWalkableNodes(Sprite);
-
-            possibleMoves.ForEach(n =>
+            while ( AStar() == null )
             {
-                if (!ClosedList.Contains(n))        // Dont move to an already visited Node
+                Console.WriteLine(this);
+
+                if (OpenList.Count() == 0)
+                    return null;
+
+            };
+
+            return GeneratePath();
+        }
+
+        private List<Node> GeneratePath()
+        {
+            return null;
+        }
+
+        public List<Node> AStar()
+        {
+            List<Node> possibleMoves;
+
+            // Pop off lowest F
+            int? min = OpenList.Min(n => n.F);
+            Node current = OpenList.Where(n => n.F == min).First();
+            OpenList.Remove(current);
+
+            // Check for goal
+            if (current.Equals(Goal))
+                return GeneratePath();
+
+            else
+            {
+                possibleMoves = GetPassibleNodes(current);
+
+                possibleMoves.ForEach(n =>
                 {
-                    if (!OpenList.Contains(n))      // Dont add duplicates to open list
+                    if (!ClosedList.Contains(n))        // Dont move to an already visited Node
                     {
                         GetF(n);
-                        OpenList.Enqueue(n);
+                        if (!OpenList.Contains(n))
+                        {
+                            n.Parent = current;
+                            OpenList.Add(n);
+                        }
                     }
-                }
-            });
-            int x = 10;
+                });
+            }
+
+            // Debug
+            Sprite = current;
+
+            ClosedList.Push(current);
+
+            return null;
+        }
+
+        private List<Node> GeneratePath(Node current)
+        {
             throw new NotImplementedException();
         }
 
@@ -95,7 +143,7 @@ namespace AStar
 
         }
 
-        public List<Node> GetWalkableNodes(Node node)
+        public List<Node> GetPassibleNodes(Node node)
         {
             int x, y;
             Node move;
@@ -109,7 +157,9 @@ namespace AStar
             {
                 move = State[x][y];
                 if (move.IsPassable)
+                {
                     moves.Add(move);
+                }
             } 
             catch (ArgumentOutOfRangeException) {}
 
@@ -121,7 +171,9 @@ namespace AStar
             {
                 move = State[x][y];
                 if (move.IsPassable)
+                {
                     moves.Add(move);
+                }
             }
             catch (ArgumentOutOfRangeException) { }
 
@@ -133,7 +185,9 @@ namespace AStar
             {
                 move = State[x][y];
                 if (move.IsPassable)
+                {
                     moves.Add(move);
+                }
             }
             catch (ArgumentOutOfRangeException) { }
 
@@ -145,7 +199,9 @@ namespace AStar
             {
                 move = State[x][y];
                 if (move.IsPassable)
+                {
                     moves.Add(move);
+                }
             }
             catch (ArgumentOutOfRangeException) { }
 
@@ -157,7 +213,9 @@ namespace AStar
             {
                 move = State[x][y];
                 if (move.IsPassable)
+                {
                     moves.Add(move);
+                }
             }
             catch (ArgumentOutOfRangeException) { }
 
@@ -169,7 +227,9 @@ namespace AStar
             {
                 move = State[x][y];
                 if (move.IsPassable)
+                {
                     moves.Add(move);
+                }
             }
             catch (ArgumentOutOfRangeException) { }
 
@@ -181,7 +241,9 @@ namespace AStar
             {
                 move = State[x][y];
                 if (move.IsPassable)
+                {
                     moves.Add(move);
+                }
             }
             catch (ArgumentOutOfRangeException) { }
 
@@ -193,19 +255,54 @@ namespace AStar
             {
                 move = State[x][y];
                 if (move.IsPassable)
+                {
                     moves.Add(move);
+                }
             }
             catch (ArgumentOutOfRangeException) { }
 
             return moves;
         }
 
+        
+
         public int? GetG(Node node)
         {
-            if (node.G != null)
-                return node.G;
+            int? temp = 0;
+            Node next = null;
 
-            node.G = node.EuclidianDistance(Start);
+            // No moves yet caluclate against start
+            if (!ClosedList.Any())
+            {
+                node.G = node.EuclidianDistance(Start);
+                return node.G;
+            }
+
+            else
+            {
+                next = ClosedList.First();
+                temp += node.EuclidianDistance(next);
+                while (next.Parent != null)
+                {
+                    next = next.Parent;
+                    temp += next.G;
+                }
+            }
+
+            // If previous G score compare with new
+            if (node.G != null)
+            {
+                // If previous route was worse set new route, usually this will not be the case.
+                if (node.G > temp)
+                {
+                    node.G = temp;
+                }
+            }
+            else
+            {
+                node.G = temp;
+            }
+             
             return node.G;
         }
 
@@ -220,9 +317,6 @@ namespace AStar
 
         public int? GetF(Node node)
         {
-            if (node.F != null)
-                return node.F;
-
             node.F = GetG(node) + GetH(node);
             return node.F;
         }
@@ -242,10 +336,10 @@ namespace AStar
                 foreach (Node node in rows)
                 {
                     if (node.Equals(Start) && Start.Equals(Sprite))
-                        sb.Append("S/@");
+                        sb.Append("S");
 
                     else if (node.Equals(Goal) && Goal.Equals(Sprite))
-                        sb.Append("G/@");
+                        sb.Append("G");
 
                     else if (node.Equals(Start))
                         sb.Append("S");

@@ -15,13 +15,20 @@ namespace AStar
             Board board = new Board(15);
             Node start = new Node(0, 0, true);
             Node end = new Node(4, 4, true);
+            List<Node> path;
+
             board.Initialize(start, end);
-            var x = board.GetWalkableNodes(board.Start);
-            board.MoveSprite();
             Console.WriteLine(board);
 
+            path = board.GetPath();
 
-            Console.ReadKey();
+            if (path == null)
+            {
+                Console.WriteLine("No Path To Goal");
+            }
+            
+
+           
 
         }
     }
