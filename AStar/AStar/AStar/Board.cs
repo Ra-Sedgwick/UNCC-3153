@@ -15,10 +15,10 @@ namespace AStar
         public Node Sprite { get; set; }
         public List<List<Node>> State { get; set; }
 
-        // Nodes Adjacent to Sprite 
+        // Availible Moves
         public MinHeap<Node> OpenList { get; set; }
 
-        // Known Nodes
+        // Nodes Already Moved to
         public List<Node> ClosedList { get; set; }
 
         public Board(int size)
@@ -44,7 +44,7 @@ namespace AStar
                 }
             }
 
-            SetImpassible();
+            SetImpassibleNodes();
         }
 
         
@@ -55,21 +55,20 @@ namespace AStar
 
             possibleMoves.ForEach(n =>
             {
-                if (!ClosedList.Contains(n))
+                if (!ClosedList.Contains(n))        // Dont move to an already visited Node
                 {
-                    if (!OpenList.Contains(n))
+                    if (!OpenList.Contains(n))      // Dont add duplicates to open list
                     {
                         GetF(n);
                         OpenList.Enqueue(n);
                     }
                 }
             });
-
             int x = 10;
             throw new NotImplementedException();
         }
 
-        public void SetImpassible()
+        public void SetImpassibleNodes()
         {
             int cellCount = (int) Math.Round(Size * Size * 0.1, 2);
             Random random = new Random(Guid.NewGuid().GetHashCode());
@@ -99,35 +98,104 @@ namespace AStar
         public List<Node> GetWalkableNodes(Node node)
         {
             int x, y;
+            Node move;
             List<Node> moves = new List<Node>();
 
             // Move up
             x = node.X;
             y = node.Y - 1;
 
-            if (IsLegalMove(x, y))
-                moves.Add(State[x][y]);
+            try
+            {
+                move = State[x][y];
+                if (move.IsPassable)
+                    moves.Add(move);
+            } 
+            catch (ArgumentOutOfRangeException) {}
+
+            // Move top right
+            x = node.X + 1;
+            y = node.Y - 1;
+
+            try
+            {
+                move = State[x][y];
+                if (move.IsPassable)
+                    moves.Add(move);
+            }
+            catch (ArgumentOutOfRangeException) { }
 
             // Move right
             x = node.X + 1;
             y = node.Y;
 
-            if (IsLegalMove(x, y))
-                moves.Add(State[x][y]);
+            try
+            {
+                move = State[x][y];
+                if (move.IsPassable)
+                    moves.Add(move);
+            }
+            catch (ArgumentOutOfRangeException) { }
+
+            // Move Bottom right
+            x = node.X + 1;
+            y = node.Y + 1;
+
+            try
+            {
+                move = State[x][y];
+                if (move.IsPassable)
+                    moves.Add(move);
+            }
+            catch (ArgumentOutOfRangeException) { }
 
             // Move down
             x = node.X;
             y = node.Y + 1;
 
-            if (IsLegalMove(x, y))
-                moves.Add(State[x][y]);
+            try
+            {
+                move = State[x][y];
+                if (move.IsPassable)
+                    moves.Add(move);
+            }
+            catch (ArgumentOutOfRangeException) { }
+
+            // Move bottom left
+            x = node.X - 1;
+            y = node.Y + 1;
+
+            try
+            {
+                move = State[x][y];
+                if (move.IsPassable)
+                    moves.Add(move);
+            }
+            catch (ArgumentOutOfRangeException) { }
 
             // Move left
             x = node.X - 1;
             y = node.Y;
 
-            if (IsLegalMove(x, y))
-                moves.Add(State[x][y]);
+            try
+            {
+                move = State[x][y];
+                if (move.IsPassable)
+                    moves.Add(move);
+            }
+            catch (ArgumentOutOfRangeException) { }
+
+            // Move top left
+            x = node.X - 1;
+            y = node.Y - 1;
+
+            try
+            {
+                move = State[x][y];
+                if (move.IsPassable)
+                    moves.Add(move);
+            }
+            catch (ArgumentOutOfRangeException) { }
 
             return moves;
         }
@@ -137,9 +205,8 @@ namespace AStar
             if (node.G != null)
                 return node.G;
 
-            node.G = node.Distance(Start);
+            node.G = node.EuclidianDistance(Start);
             return node.G;
-
         }
 
         public int? GetH(Node node)
@@ -147,7 +214,7 @@ namespace AStar
             if (node.H != null)
                 return node.H;
 
-            node.H = node.Distance(Goal);
+            node.H = node.ManhattanDistance(Goal);
             return node.H;
         }
 
@@ -160,10 +227,12 @@ namespace AStar
             return node.F;
         }
 
-        private bool IsLegalMove(int x, int y)
-        {
-            return (x >= 0 && x < Size) && (y >= 0 && y < Size);
-        }
+        //private bool IsLegalMove(Node node)
+        //{
+        //    return node.IsPassable && 
+        //        (node.X >= 0 && node.X < Size) && 
+        //        (node.Y >= 0 && node.Y < Size);
+        //}
 
         public override string ToString()
         {
@@ -197,7 +266,6 @@ namespace AStar
                 }
                 sb.AppendLine();
             }
-
 
             return sb.ToString();
         }

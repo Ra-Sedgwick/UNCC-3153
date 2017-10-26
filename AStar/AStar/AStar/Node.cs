@@ -23,13 +23,19 @@ namespace AStar
             IsPassable = isPassable;
         }
 
-        public int Distance(Node node)
+        public int EuclidianDistance(Node node)
         {
-            // Manhattan Distance
+            int x = node.X;
+            int y = node.Y;
 
+            return (int)Math.Sqrt(
+                    Math.Pow(X - x, 2) + Math.Pow(Y - y, 2)
+                ) * 10;
+        }
 
-            return Math.Abs(X - node.X) + Math.Abs(Y - node.Y);
-               
+        public int ManhattanDistance(Node node)
+        {
+            return (Math.Abs(X - node.X) + Math.Abs(Y - node.Y)) * 10;
         }
 
 
@@ -46,13 +52,13 @@ namespace AStar
 
             Node node = obj as Node;
 
-            if (F < node.F)
+            if (F > node.F)
                 return 1;
 
             if (F == node.F)
                 return 0;
 
-            if (F > node.F)
+            if (F < node.F)
                 return -1;
 
             else
