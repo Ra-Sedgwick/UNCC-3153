@@ -24,9 +24,14 @@ namespace AStar
 
             if (path == null)
             {
+                Console.WriteLine(board);
                 Console.WriteLine("No Path To Goal");
             }
-            
+            else
+                board.PrintPath(path);
+
+            Console.ReadKey();
+
 
            
 

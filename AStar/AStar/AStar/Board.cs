@@ -59,7 +59,6 @@ namespace AStar
 
             while ( path == null )
             {
-                Console.WriteLine(this);
 
                 path = AStar();
 
@@ -110,10 +109,10 @@ namespace AStar
                 });
             }
 
-            // Debug
             Sprite = current;
 
             ClosedList.Push(current);
+            Console.WriteLine(this);
 
             return null;
         }
@@ -328,12 +327,26 @@ namespace AStar
             return node.F;
         }
 
-        //private bool IsLegalMove(Node node)
-        //{
-        //    return node.IsPassable && 
-        //        (node.X >= 0 && node.X < Size) && 
-        //        (node.Y >= 0 && node.Y < Size);
-        //}
+        public void PrintPath(List<Node> path)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("Path: Start = ");
+
+            path.ForEach(n => sb.Append($"[{n.X}, {n.Y}] => "));
+            sb.AppendLine("Goal!");
+
+            Console.WriteLine(sb);
+
+            path.ForEach(n => {
+                Sprite = n;
+                Console.WriteLine(this);
+                Console.WriteLine("Press any key to advance...\n");
+                Console.ReadKey();
+            });
+
+            Console.WriteLine(sb.ToString());
+        }
 
         public override string ToString()
         {
@@ -346,7 +359,7 @@ namespace AStar
                         sb.Append("S");
 
                     else if (node.Equals(Goal) && Goal.Equals(Sprite))
-                        sb.Append("G");
+                        sb.Append("Goal!!");
 
                     else if (node.Equals(Start))
                         sb.Append("S");

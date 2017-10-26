@@ -25,12 +25,12 @@ namespace AStar
 
         public int EuclidianDistance(Node node)
         {
-            int x = node.X;
-            int y = node.Y;
+            int x = (node.X - X) * 10;
+            int y = (node.Y - Y) * 10;
 
             return (int)Math.Sqrt(
-                    Math.Pow(X - x, 2) + Math.Pow(Y - y, 2)
-                ) * 10;
+                    Math.Pow(x, 2) + Math.Pow(x, 2)
+                );
         }
 
         public int ManhattanDistance(Node node)
