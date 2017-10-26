@@ -55,16 +55,20 @@ namespace AStar
 
         public List<Node> GetPath()
         {
-            while ( AStar() == null )
+            List<Node> path = AStar();
+
+            while ( path == null )
             {
                 Console.WriteLine(this);
+
+                path = AStar();
 
                 if (OpenList.Count() == 0)
                     return null;
 
             };
 
-            return GeneratePath();
+            return path;
         }
 
         private List<Node> GeneratePath()
@@ -83,7 +87,10 @@ namespace AStar
 
             // Check for goal
             if (current.Equals(Goal))
-                return GeneratePath();
+            {
+                ClosedList.Push(current);
+                return ClosedList.Reverse().ToList();
+            }
 
             else
             {
